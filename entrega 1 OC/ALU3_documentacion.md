@@ -1,5 +1,18 @@
 # ALU3 — ALU de 3 entradas (Pregunta 2 del parcial)
 
+## Estado actual (Pregunta 2 del parcial)
+
+| Entregable | Estado |
+|---|---|
+| Conjunto de operaciones y bits de control | ✅ Done — tabla más abajo |
+| Diagrama de bloques/lógico | ⬜ Pendiente — no hay un archivo de diagrama para ALU3 todavía (solo el esquema ASCII de esta página) |
+| Implementación `ALU3.hdl` | ✅ Done |
+| Script de pruebas (`ALU3.tst`/`ALU3.cmp`) | ✅ Done — 42 vectores, ver sección Validación |
+| Validación en el Hardware Simulator | ✅ Done — `Comparison ended successfully` |
+| Análisis de arquitectura (practicidad) | ✅ Done — sección más abajo |
+| Documento de estrategia (PDF, sección Pregunta 2) | 🔶 En proceso |
+| Video de sustentación | 🔶 En proceso |
+
 ## Idea de diseño
 
 En lugar de diseñar una ALU de 3 entradas "desde cero" con una red de compuertas completamente nueva, `ALU3` **reutiliza dos veces la ALU clásica de 16 bits** (`ALU.hdl`) encadenada en serie:
@@ -52,9 +65,9 @@ Combinando los 6 bits de la etapa 1 (idénticos a la tabla de la ALU clásica) c
 
 ## Validación
 
-`ALU3.tst` / `ALU3.cmp`: 42 casos de prueba, corridos con `tools/HardwareSimulator.sh`, resultado: **`Comparison ended successfully`**. Incluye:
-- Las 18 funciones clásicas de la etapa 1 combinadas con `w+z` y `w&z`.
-- Casos borde: `z` anulado (`zz=1`, el resultado debe igualar a `w`), `z` negado (`w - z`), overflow con signo al encadenar dos sumas (`32767+1+1`), suma de tres números en all-ones (`-1-1-1`), y negación final (`noz`).
+`ALU3.tst` / `ALU3.cmp` (en esta misma carpeta): 42 casos de prueba, corridos con `tools/HardwareSimulator.sh`, resultado: **`Comparison ended successfully`**. Cada valor esperado se calculó primero de forma independiente en Python (replicando la semántica de la ALU de 16 bits en cascada) y luego se confirmó bit a bit contra la salida real del simulador. Incluye:
+- 6 funciones representativas de la etapa 1 (`x+y`, `x-y`, `x&y`, `-x`, `x+1`, `0`) combinadas con 6 funciones de la etapa 2 (`w+z`, `w-z`, `w&z`, `z` anulado, `-(w+z)`, `z` ignorado).
+- 7 combinaciones de `x,y,z`, incluyendo casos borde: `x=y=z=0`, los tres en `0xFFFF` (`-1,-1,-1`), overflow con signo al encadenar dos sumas (`32767+1+1`), y el valor más negativo de 16 bits (`0x8000`) sumado a operandos pequeños.
 
 ## Análisis de arquitectura: ¿es practico en la vida real?
 

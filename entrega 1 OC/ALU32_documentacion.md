@@ -4,14 +4,12 @@
 
 | Entregable | Estado |
 |---|---|
-| Diagrama de bloques/lógico | Existe una primera versión, pendiente de ajustar para que muestre el acarreo entre mitades y los `Mux16` de selección |
-| Implementación `ALU32.hdl` | Completa, con las 7 etapas descritas abajo |
-| Script de pruebas (`.tst`/`.cmp`) | No existe todavía — hay que crearlo con casos que crucen el límite de 16 bits |
-| Validación en el Hardware Simulator | Pendiente (depende del `.tst`) |
-| Documento de estrategia (sección Pregunta 1) | No iniciado |
-| Video de sustentación | No grabado |
-
-**Tablero (Kanban):** las 6 historias de la Pregunta 1 están en *In progress*, repartidas entre Emmanuel (diagrama), Santiago (implementación y validación) y Jacobo (tests y documento). El video lo graban los tres.
+| Diagrama de bloques/lógico | ✅ Done — `ALU32_diagrama.docx` / `ALU32_diagrama.png`, reorganizado por mitad de bits (Low/High) con el bloque de detección de acarreo |
+| Implementación `ALU32.hdl` | ✅ Done — las 7 etapas descritas abajo |
+| Script de pruebas (`ALU32.tst`/`ALU32.cmp`) | ✅ Done — 144 vectores (18 funciones clásicas × 8 pares X,Y, incluyendo casos que cruzan el acarreo entre mitades) |
+| Validación en el Hardware Simulator | ✅ Done — `Comparison ended successfully` |
+| Documento de estrategia (PDF, sección Pregunta 1) | 🔶 En proceso |
+| Video de sustentación | 🔶 En proceso |
 
 ---
 
