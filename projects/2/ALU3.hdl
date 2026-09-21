@@ -1,0 +1,15 @@
+CHIP ALU3 {
+    IN  x[16], y[16], z[16],
+        zx, nx, zy, ny, f, no,
+        zz, nz, fz, noz;
+    OUT out[16], zr, ng;
+
+    PARTS:
+    // Etapa 1: combina X e Y exactamente como la ALU clasica de 16 bits
+    ALU(x=x, y=y, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=w);
+
+    // Etapa 2: combina el resultado w con Z usando el mismo patron
+    // (w hace de "x", con zx=nx=false porque w ya viene completamente
+    // procesado por la etapa 1 y no necesita un segundo cero/negacion)
+    ALU(x=w, y=z, zx=false, nx=false, zy=zz, ny=nz, f=fz, no=noz, out=out, zr=zr, ng=ng);
+}

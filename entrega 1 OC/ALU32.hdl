@@ -1,0 +1,111 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/2/ALU32.hdl
+/**
+ * ALU32 (32-bit Arithmetic Logic Unit para Nand2Tetris):
+ *
+ * Entradas:
+ *   xLow[16], xHigh[16] : Operando X (32 bits divididos en dos de 16)
+ *   yLow[16], yHigh[16] : Operando Y (32 bits divididos en dos de 16)
+ *   zx, nx, zy, ny, f, no : Bits de control
+ *
+ * Salidas:
+ *   outLow[16], outHigh[16] : Resultado (32 bits divididos en dos de 16)
+ *   zr : 1 si el resultado completo de 32 bits es 0, de lo contrario 0
+ *   ng : 1 si el resultado es negativo (bit 15 de outHigh == 1)
+ */
+
+CHIP ALU32 {
+    IN  
+        xLow[16], xHigh[16],
+        yLow[16], yHigh[16],
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute (out = x + y) or (out = x & y)?
+        no; // negate the out output?
+    OUT 
+        outLow[16],
+        outHigh[16],
+        zr,      // if (out == 0) equals 1, else 0
+        ng;      // if (out < 0)  equals 1, else 0
+
+    PARTS:
+
+    // ================================================================
+    // PASO 1: Procesar entrada X (zx, nx)
+    // ================================================================
+    Mux16(a=xLow, b=false, sel=zx, out=x1Low);
+    Not16(in=x1Low, out=notx1Low);
+    Mux16(a=x1Low, b=notx1Low, sel=nx, out=x2Low, out[15]=x2Low15);
+
+    Mux16(a=xHigh, b=false, sel=zx, out=x1High);
+    Not16(in=x1High, out=notx1High);
+    Mux16(a=x1High, b=notx1High, sel=nx, out=x2High);
+
+    // ================================================================
+    // PASO 2: Procesar entrada Y (zy, ny)
+    // ================================================================
+    Mux16(a=yLow, b=false, sel=zy, out=y1Low);
+    Not16(in=y1Low, out=noty1Low);
+    Mux16(a=y1Low, b=noty1Low, sel=ny, out=y2Low, out[15]=y2Low15);
+
+    Mux16(a=yHigh, b=false, sel=zy, out=y1High);
+    Not16(in=y1High, out=noty1High);
+    Mux16(a=y1High, b=noty1High, sel=ny, out=y2High);
+
+    // ================================================================
+    // PASO 3: Operación AND (f=0)
+    // ================================================================
+    And16(a=x2Low,  b=y2Low,  out=andLow);
+    And16(a=x2High, b=y2High, out=andHigh);
+
+    // ================================================================
+    // PASO 4: Operación ADD (f=1) con propagación de acarreo
+    // ================================================================
+    // Suma mitad baja
+    Add16(a=x2Low, b=y2Low, out=addLow, out[15]=addLow15);
+
+    // Detección lógica del carry de la mitad baja:
+    // carry = (a15 & b15) | ((a15 | b15) & !sum15)
+    And(a=x2Low15, b=y2Low15, out=generateCarry);
+    Or(a=x2Low15,  b=y2Low15, out=propagateCarry);
+    Not(in=addLow15, out=notAddLow15);
+    And(a=propagateCarry, b=notAddLow15, out=propagatedCarry);
+    Or(a=generateCarry, b=propagatedCarry, out=carryFromLow);
+
+    // Suma mitad alta + acarreo
+    Add16(a=x2High, b=y2High, out=addHighBase);
+    Add16(a=addHighBase, b[0]=carryFromLow, out=addHigh);
+
+    // ================================================================
+    // PASO 5: Seleccionar función (f=0: AND, f=1: ADD)
+    // ================================================================
+    Mux16(a=andLow,  b=addLow,  sel=f, out=foutLow);
+    Mux16(a=andHigh, b=addHigh, sel=f, out=foutHigh);
+
+    // ================================================================
+    // PASO 6: Post-procesamiento (no) y generación de salidas
+    // ================================================================
+    Not16(in=foutLow, out=notfoutLow);
+    Mux16(a=foutLow, b=notfoutLow, sel=no,
+          out=outLow, out[0..7]=outByte0, out[8..15]=outByte1);
+
+    Not16(in=foutHigh, out=notfoutHigh);
+    Mux16(a=foutHigh, b=notfoutHigh, sel=no,
+          out=outHigh, out[0..7]=outByte2, out[8..15]=outByte3, out[15]=ng);
+
+    // ================================================================
+    // PASO 7: Flag zr (cero global de 32 bits)
+    // ================================================================
+    Or8Way(in=outByte0, out=z0);
+    Or8Way(in=outByte1, out=z1);
+    Or8Way(in=outByte2, out=z2);
+    Or8Way(in=outByte3, out=z3);
+    Or(a=z0, b=z1, out=z01);
+    Or(a=z2, b=z3, out=z23);
+    Or(a=z01, b=z23, out=nonzero);
+    Not(in=nonzero, out=zr);
+}
