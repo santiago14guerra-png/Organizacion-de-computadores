@@ -1,23 +1,4 @@
-// File name: projects/2/ALU3.hdl
-/**
- * ALU3 (ALU de 3 entradas para Nand2Tetris):
- *
- * Calcula out = fz( no( f( zx?0:x , zy?0:y ) ) , zz?0:z )
- * es decir: primero combina X e Y exactamente como la ALU clásica de 16 bits
- * (usando los 6 bits de control conocidos: zx, nx, zy, ny, f, no), y el
- * resultado de esa combinación (w) se vuelve a combinar con Z usando el
- * mismo patrón (zz, nz, fz, noz).
- *
- * Entradas:
- *   x[16], y[16], z[16] : Operandos, 16 bits cada uno
- *   zx, nx, zy, ny, f, no : Bits de control de la etapa X-Y (igual que ALU.hdl)
- *   zz, nz, fz, noz       : Bits de control de la etapa (X op Y) - Z
- *
- * Salidas:
- *   out[16] : Resultado final
- *   zr : 1 si out == 0
- *   ng : 1 si out < 0
- */
+// ALU3: ALU de 3 entradas (x, y, z)
 
 CHIP ALU3 {
     IN  x[16], y[16], z[16],
@@ -26,11 +7,9 @@ CHIP ALU3 {
     OUT out[16], zr, ng;
 
     PARTS:
-    // Etapa 1: combina X e Y exactamente como la ALU clasica de 16 bits
+    // Etapa 1: combina x e y como la ALU clasica
     ALU(x=x, y=y, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=w);
 
-    // Etapa 2: combina el resultado w con Z usando el mismo patron
-    // (w hace de "x", con zx=nx=false porque w ya viene completamente
-    // procesado por la etapa 1 y no necesita un segundo cero/negacion)
+    // Etapa 2: combina el resultado w con z
     ALU(x=w, y=z, zx=false, nx=false, zy=zz, ny=nz, f=fz, no=noz, out=out, zr=zr, ng=ng);
 }
