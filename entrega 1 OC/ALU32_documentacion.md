@@ -8,7 +8,7 @@
 | Implementación `ALU32.hdl` | ✅ Done — las 7 etapas descritas abajo |
 | Script de pruebas (`ALU32.tst`/`ALU32.cmp`) | ✅ Done — 144 vectores (18 funciones clásicas × 8 pares X,Y, incluyendo casos que cruzan el acarreo entre mitades) |
 | Validación en el Hardware Simulator | ✅ Done — `Comparison ended successfully` |
-| Documento de estrategia (PDF, sección Pregunta 1) | 🔶 En proceso |
+| Documento de estrategia (PDF) | ✅ Done — `Documento_Estrategia_Parcial1.pdf` (falta confirmar apellidos de Emmanuel y Jacobo en la portada) |
 | Video de sustentación | 🔶 En proceso |
 
 ---

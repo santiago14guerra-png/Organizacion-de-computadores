@@ -5,12 +5,12 @@
 | Entregable | Estado |
 |---|---|
 | Conjunto de operaciones y bits de control | ✅ Done — tabla más abajo |
-| Diagrama de bloques/lógico | ⬜ Pendiente — no hay un archivo de diagrama para ALU3 todavía (solo el esquema ASCII de esta página) |
+| Diagrama de bloques/lógico | ✅ Done — `ALU3_diagrama.png` |
 | Implementación `ALU3.hdl` | ✅ Done |
 | Script de pruebas (`ALU3.tst`/`ALU3.cmp`) | ✅ Done — 42 vectores, ver sección Validación |
 | Validación en el Hardware Simulator | ✅ Done — `Comparison ended successfully` |
 | Análisis de arquitectura (practicidad) | ✅ Done — sección más abajo |
-| Documento de estrategia (PDF, sección Pregunta 2) | 🔶 En proceso |
+| Documento de estrategia (PDF) | ✅ Done — `Documento_Estrategia_Parcial1.pdf` (falta confirmar apellidos de Emmanuel y Jacobo en la portada) |
 | Video de sustentación | 🔶 En proceso |
 
 ## Idea de diseño
