@@ -1,3 +1,13 @@
 .DS_Store
 *.out
 tools/bin/*.dat
+
+# Solo se sube "entrega 1 OC" al repo; el resto del curso se mantiene local
+/ASM/
+/projects/
+/tools/
+/README.md
+/VM/
+entrega 1 OC/*.cmp
+entrega 1 OC/*.tst
+entrega 1 OC/*_documentacion.md
