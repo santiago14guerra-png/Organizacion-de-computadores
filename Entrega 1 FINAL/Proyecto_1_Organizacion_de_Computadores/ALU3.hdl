@@ -1,0 +1,16 @@
+// ALU3: ALU de 3 entradas (x, y, z)
+
+CHIP ALU3 {
+    IN  x[16], y[16], z[16],
+        zx, nx, zy, ny, f, no,  // etapa 1: w = x (op) y
+        zz, nz, fz, noz;        // etapa 2: out = w (op) z
+    OUT out[16], zr, ng;
+
+    PARTS:
+    // Etapa 1: combina x e y como la ALU clasica
+    ALU(x=x, y=y, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=w);
+
+    // Etapa 2: combina el resultado w con z
+    // (w entra con zx=nx=false porque ya viene procesado por la etapa 1)
+    ALU(x=w, y=z, zx=false, nx=false, zy=zz, ny=nz, f=fz, no=noz, out=out, zr=zr, ng=ng);
+}
