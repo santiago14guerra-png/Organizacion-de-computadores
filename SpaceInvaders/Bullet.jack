@@ -1,0 +1,63 @@
+/** El disparo del terricola. Como en el arcade, solo hay uno en pantalla a la vez. */
+class Bullet {
+    field int x, y;
+    field boolean active;
+
+    constructor Bullet new() {
+        let active = false;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 2, y + 7);
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + 2, y + 7);
+        return;
+    }
+
+    /** Sale justo encima de la linea de defensa para no borrarla al pasar. */
+    method void fire(int gunX) {
+        if (~active) {
+            let x = gunX;
+            let y = Board.line() - 8;
+            let active = true;
+            do draw();
+        }
+        return;
+    }
+
+    /** Sube la bala; se apaga al llegar al HUD. */
+    method void update() {
+        if (active) {
+            do erase();
+            let y = y - 8;
+            if (y < 18) {
+                let active = false;
+            } else {
+                do draw();
+            }
+        }
+        return;
+    }
+
+    method void stop() {
+        do erase();
+        let active = false;
+        return;
+    }
+
+    /** Colision AABB contra una caja de w por h con esquina en (bx, by). */
+    method boolean hits(int bx, int by, int w, int h) {
+        return active & (x < (bx + w)) & ((x + 3) > bx) & (y < (by + h)) & ((y + 8) > by);
+    }
+}

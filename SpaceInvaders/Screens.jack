@@ -1,0 +1,127 @@
+/** Pantallas de inicio y de fin de partida, y utilidades de texto. */
+class Screens {
+
+    /** Imprime un literal y lo libera: en Jack cada literal reserva un String nuevo. */
+    function void text(int row, int col, String s) {
+        do Output.moveCursor(row, col);
+        do Output.printString(s);
+        do s.dispose();
+        return;
+    }
+
+    /** Dibuja una fila de letras grandes, centrada: cada 'X' es un bloque de size pixeles. */
+    function void big(String art, int y, int size) {
+        var int i, x;
+
+        do Screen.setColor(true);
+        let x = 256 - ((art.length() * size) / 2);
+        while (i < art.length()) {
+            if (art.charAt(i) = 88) {   // 'X'
+                do Screen.drawRectangle(x, y, x + size - 2, y + size - 2);
+            }
+            let x = x + size;
+            let i = i + 1;
+        }
+        do art.dispose();
+        return;
+    }
+
+    /** Dos franjas horizontales que enmarcan las pantallas. */
+    function void frame() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(8, 6, 503, 9);
+        do Screen.drawRectangle(8, 246, 503, 249);
+        return;
+    }
+
+    function void showAlien(int x, int y, int type) {
+        var Alien alien;
+
+        let alien = Alien.new(x, y, type);
+        do alien.draw();
+        do alien.dispose();
+        return;
+    }
+
+    /** Espera la tecla indicada (true) o Q (false). */
+    function boolean ask(char yes) {
+        var char key;
+
+        while (true) {
+            let key = Keyboard.keyPressed();
+            if (key = yes) {
+                return true;
+            }
+            if (key = 81) {
+                return false;
+            }
+            do Sys.wait(50);
+        }
+        return false;
+    }
+
+    /** Devuelve true si el jugador quiere empezar. */
+    function boolean title() {
+        do Screen.clearScreen();
+        do Screens.frame();
+
+        do Screens.big("XXXX XXXX .XX. .XXX XXXX", 20, 6);
+        do Screens.big("X... X..X X..X X... X...", 26, 6);
+        do Screens.big("XXXX XXXX XXXX X... XXX.", 32, 6);
+        do Screens.big("...X X... X..X X... X...", 38, 6);
+        do Screens.big("XXXX X... X..X .XXX XXXX", 44, 6);
+
+        do Screens.big("XXX X..X X..X .XX. XXX. XXXX XXX. XXXX", 58, 6);
+        do Screens.big(".X. XX.X X..X X..X X..X X... X..X X...", 64, 6);
+        do Screens.big(".X. X.XX X..X XXXX X..X XXX. XXX. XXXX", 70, 6);
+        do Screens.big(".X. X..X .XX. X..X X..X X... X.X. ...X", 76, 6);
+        do Screens.big("XXX X..X .XX. X..X XXX. XXXX X..X XXXX", 82, 6);
+
+        do Screens.showAlien(192, 106, 0);
+        do Screens.text(10, 28, "= 20 PUNTOS");
+        do Screens.showAlien(192, 128, 1);
+        do Screens.text(12, 28, "= 10 PUNTOS");
+
+        do Screens.text(15, 8, "Derriba a los 12 marcianos antes de que crucen la linea");
+        do Screens.text(17, 13, "Flechas: mover   Espacio: disparar   Q: salir");
+        do Screens.text(20, 21, "Presiona ENTER para jugar");
+
+        return Screens.ask(128);
+    }
+
+    /** Pantalla final. Devuelve true si el jugador quiere otra partida. */
+    function boolean end(boolean won, int score) {
+        do Screen.clearScreen();
+        do Screens.frame();
+
+        if (won) {
+            do Screens.big("X..X XXX .XXX XXX .XX. XXX. XXX .XX.", 40, 8);
+            do Screens.big("X..X .X. X... .X. X..X X..X .X. X..X", 48, 8);
+            do Screens.big("X..X .X. X... .X. X..X XXX. .X. XXXX", 56, 8);
+            do Screens.big(".XX. .X. X... .X. X..X X.X. .X. X..X", 64, 8);
+            do Screens.big(".XX. XXX .XXX .X. .XX. X..X XXX X..X", 72, 8);
+            do Screens.text(11, 20, "La Tierra esta a salvo!");
+        } else {
+            do Screens.big(".XXX .XX. X...X XXXX  .XX. X..X XXXX XXX.", 40, 8);
+            do Screens.big("X... X..X XX.XX X...  X..X X..X X... X..X", 48, 8);
+            do Screens.big("X.XX XXXX X.X.X XXX.  X..X X..X XXX. XXX.", 56, 8);
+            do Screens.big("X..X X..X X...X X...  X..X .XX. X... X.X.", 64, 8);
+            do Screens.big(".XXX X..X X...X XXXX  .XX. .XX. XXXX X..X", 72, 8);
+            do Screens.showAlien(144, 112, 0);
+            do Screens.showAlien(240, 112, 1);
+            do Screens.showAlien(336, 112, 0);
+        }
+
+        do Screens.text(14, 24, "Puntaje final: ");
+        do Output.printInt(score);
+        do Screens.text(17, 17, "R: jugar de nuevo     Q: salir");
+
+        return Screens.ask(82);
+    }
+
+    function void goodbye() {
+        do Screen.clearScreen();
+        do Screens.text(11, 24, "Gracias por jugar!");
+        return;
+    }
+}

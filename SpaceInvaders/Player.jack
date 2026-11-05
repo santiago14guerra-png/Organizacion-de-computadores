@@ -1,0 +1,57 @@
+/** El terricola: un astronauta con su arma, dibujado con primitivas de Screen. */
+class Player {
+    field int x;   // borde izquierdo; la altura es fija porque camina sobre el suelo
+
+    constructor Player new() {
+        let x = 246;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawCircle(x + 8, 215, 7);                    // casco
+        do Screen.drawRectangle(x + 4, 223, x + 12, 231);       // cuerpo
+        do Screen.drawRectangle(x + 4, 232, x + 7, 235);        // pierna izquierda
+        do Screen.drawRectangle(x + 9, 232, x + 12, 235);       // pierna derecha
+        do Screen.drawRectangle(x, 224, x + 3, 229);            // mochila
+        do Screen.drawRectangle(x + 13, 225, x + 17, 227);      // brazo
+        do Screen.drawRectangle(x + 16, 207, x + 18, 226);      // arma
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 4, 213, x + 12, 217);       // visor
+        do Screen.drawRectangle(x + 7, 226, x + 9, 228);        // insignia
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, 206, x + 18, 235);
+        return;
+    }
+
+    method void moveLeft() {
+        if (x > 8) {
+            do erase();
+            let x = Math.max(x - 6, 8);
+            do draw();
+        }
+        return;
+    }
+
+    method void moveRight() {
+        if (x < 485) {
+            do erase();
+            let x = Math.min(x + 6, 485);
+            do draw();
+        }
+        return;
+    }
+
+    method int gunX() {
+        return x + 16;
+    }
+}

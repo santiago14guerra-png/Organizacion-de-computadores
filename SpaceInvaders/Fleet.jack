@@ -1,0 +1,130 @@
+/** La flota: 3 filas de 4 marcianos que avanzan juntos y bajan al tocar una pared. */
+class Fleet {
+    field Array aliens;
+    field int alive, ticks, dx;
+
+    constructor Fleet new() {
+        var int row, col;
+
+        let aliens = Array.new(12);
+        while (row < 3) {
+            let col = 0;
+            while (col < 4) {
+                // solo la fila de arriba es de calamares
+                let aliens[(row * 4) + col] = Alien.new(32 + (col * 64), 24 + (row * 24), Math.min(row, 1));
+                let col = col + 1;
+            }
+            let row = row + 1;
+        }
+        let alive = 12;
+        let ticks = 0;
+        let dx = 16;
+        return this;
+    }
+
+    method void dispose() {
+        var int i;
+        var Alien alien;
+
+        while (i < 12) {
+            let alien = aliens[i];
+            do alien.dispose();
+            let i = i + 1;
+        }
+        do aliens.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        var int i;
+        var Alien alien;
+
+        while (i < 12) {
+            let alien = aliens[i];
+            do alien.draw();
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Da un paso cada (alive + 1) cuadros: entre menos quedan, mas rapido van. */
+    method void update() {
+        let ticks = ticks + 1;
+        if (ticks > alive) {
+            let ticks = 0;
+            do step();
+        }
+        return;
+    }
+
+    method void step() {
+        var int i, moveX, moveY;
+        var Alien alien;
+
+        let moveX = dx;
+        if (atEdge()) {
+            let dx = -dx;
+            let moveX = 0;
+            let moveY = 16;
+        }
+        while (i < 12) {
+            let alien = aliens[i];
+            if (alien.isAlive()) {
+                do alien.step(moveX, moveY);
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method boolean atEdge() {
+        var int i;
+        var Alien alien;
+
+        while (i < 12) {
+            let alien = aliens[i];
+            if (alien.atEdge(dx)) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    /** Si la bala toca un marciano lo elimina y devuelve sus puntos; si no, devuelve 0. */
+    method int shoot(Bullet bullet) {
+        var int i;
+        var Alien alien;
+
+        while (i < 12) {
+            let alien = aliens[i];
+            if (alien.hitBy(bullet)) {
+                do bullet.stop();
+                let alive = alive - 1;
+                return alien.kill();
+            }
+            let i = i + 1;
+        }
+        return 0;
+    }
+
+    /** True si algun marciano llego a la linea de defensa. */
+    method boolean landed() {
+        var int i;
+        var Alien alien;
+
+        while (i < 12) {
+            let alien = aliens[i];
+            if (alien.reached(Board.line())) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    method int alive() {
+        return alive;
+    }
+}

@@ -1,27 +1,22 @@
+/** Punto de entrada: pantalla de inicio y una partida tras otra hasta que el jugador salga. */
 class Main {
 
-    function void dibujarCirculo (int posx, int posY, int radio) {
-        do Screen.setColor(true);
-        do Screen.drawCircle(posX, posY, radio);
-        return;
-    }
+    function void main() {
+        var Game game;
+        var boolean playing;
 
-    function void borrarCirculo (int posx, int posY, int radio) {
-        do Screen.setColor(true);
-        do Screen.drawCircle(posX, posY, radio);
-        return;
-    }
-
-    funtion int moverIzq (int posX, int radio, int paso) {
-        var int limiteIzq;
-        let limiteIzq = radio+1;
-        if((posX - paso) < limiteIzq) {
-            return limiteIzq;
+        do Alien.init();
+        let playing = Screens.title();
+        while (playing) {
+            let game = Game.new();
+            let playing = game.run();
+            if (playing) {
+                let playing = Screens.end(game.won(), game.score());
+            }
+            do game.dispose();
         }
-        return posX+paso;
-    }
-
-    function main() {
-
+        do Screens.goodbye();
+        do Alien.cleanup();
+        return;
     }
 }
