@@ -1,0 +1,27 @@
+class Main {
+
+    function void dibujarCirculo (int posx, int posY, int radio) {
+        do Screen.setColor(true);
+        do Screen.drawCircle(posX, posY, radio);
+        return;
+    }
+
+    function void borrarCirculo (int posx, int posY, int radio) {
+        do Screen.setColor(true);
+        do Screen.drawCircle(posX, posY, radio);
+        return;
+    }
+
+    funtion int moverIzq (int posX, int radio, int paso) {
+        var int limiteIzq;
+        let limiteIzq = radio+1;
+        if((posX - paso) < limiteIzq) {
+            return limiteIzq;
+        }
+        return posX+paso;
+    }
+
+    function main() {
+
+    }
+}
