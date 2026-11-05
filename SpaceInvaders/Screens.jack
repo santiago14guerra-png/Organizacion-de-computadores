@@ -17,7 +17,7 @@ class Screens {
         let x = 256 - ((art.length() * size) / 2);
         while (i < art.length()) {
             if (art.charAt(i) = 88) {   // 'X'
-                do Screen.drawRectangle(x, y, x + size - 2, y + size - 2);
+                do Screen.drawRectangle(x, y, x + size - 1, y + size - 1);
             }
             let x = x + size;
             let i = i + 1;
@@ -82,9 +82,9 @@ class Screens {
         do Screens.showAlien(192, 128, 1);
         do Screens.text(12, 28, "= 10 PUNTOS");
 
-        do Screens.text(15, 8, "Derriba a los 12 marcianos antes de que crucen la linea");
-        do Screens.text(17, 13, "Flechas: mover   Espacio: disparar   Q: salir");
-        do Screens.text(20, 21, "Presiona ENTER para jugar");
+        do Screens.text(15, 4, "Derriba a los 12 marcianos antes de que crucen la linea");
+        do Screens.text(17, 9, "Flechas: mover   Espacio: disparar   Q: salir");
+        do Screens.text(20, 19, "Presiona ENTER para jugar");
 
         return Screens.ask(128);
     }

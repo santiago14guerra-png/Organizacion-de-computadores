@@ -178,12 +178,12 @@ class Alien {
         return alive & bullet.hits(x, y, 22, 16);
     }
 
-    /** Dira si el siguiente paso horizontal lo saca de los limites del tablero. */
+    /** True si el siguiente paso horizontal lo saca de los limites del tablero. */
     method boolean atEdge(int dx) {
         return alive & (((x + dx) < 16) | ((x + dx) > 464));
     }
 
     method boolean reached(int lineY) {
-        return alive & ((y + 15) > (lineY - 1));
+        return alive & ((y + 16) > lineY);
     }
 }
