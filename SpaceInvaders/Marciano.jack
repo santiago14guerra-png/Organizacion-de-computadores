@@ -1,0 +1,190 @@
+// Un marciano. Se dibuja escribiendo directo en la memoria de la pantalla,
+// por eso su x siempre es multiplo de 16.
+class Marciano {
+    static Array pantalla, dibujos;
+
+    field int x, y, tipo, cuadro; // tipo 0 = calamar (20 puntos), tipo 1 = cangrejo (10 puntos)
+    field boolean vivo;
+
+    // Prepara los dibujos una sola vez, al abrir el juego. Cada X es un pixel.
+    function void cargarDibujos() {
+        var Array d;
+
+        let pantalla = 16384;
+        let dibujos = Array.new(5);
+
+        let d = Array.new(16); // calamar, patas abiertas
+        let dibujos[0] = d;
+        do Marciano.fila(d, 0, "....XX.....");
+        do Marciano.fila(d, 1, "...XXXX....");
+        do Marciano.fila(d, 2, "..XXXXXX...");
+        do Marciano.fila(d, 3, ".XX.XX.XX..");
+        do Marciano.fila(d, 4, ".XXXXXXXX..");
+        do Marciano.fila(d, 5, "...X..X....");
+        do Marciano.fila(d, 6, "..X.XX.X...");
+        do Marciano.fila(d, 7, ".X.X..X.X..");
+
+        let d = Array.new(16); // calamar, patas cerradas
+        let dibujos[1] = d;
+        do Marciano.fila(d, 0, "....XX.....");
+        do Marciano.fila(d, 1, "...XXXX....");
+        do Marciano.fila(d, 2, "..XXXXXX...");
+        do Marciano.fila(d, 3, ".XX.XX.XX..");
+        do Marciano.fila(d, 4, ".XXXXXXXX..");
+        do Marciano.fila(d, 5, "..X.XX.X...");
+        do Marciano.fila(d, 6, ".X......X..");
+        do Marciano.fila(d, 7, "..X....X...");
+
+        let d = Array.new(16); // cangrejo, brazos abajo
+        let dibujos[2] = d;
+        do Marciano.fila(d, 0, "..X.....X..");
+        do Marciano.fila(d, 1, "...X...X...");
+        do Marciano.fila(d, 2, "..XXXXXXX..");
+        do Marciano.fila(d, 3, ".XX.XXX.XX.");
+        do Marciano.fila(d, 4, "XXXXXXXXXXX");
+        do Marciano.fila(d, 5, "X.XXXXXXX.X");
+        do Marciano.fila(d, 6, "X.X.....X.X");
+        do Marciano.fila(d, 7, "...XX.XX...");
+
+        let d = Array.new(16); // cangrejo, brazos arriba
+        let dibujos[3] = d;
+        do Marciano.fila(d, 0, "..X.....X..");
+        do Marciano.fila(d, 1, "X..X...X..X");
+        do Marciano.fila(d, 2, "X.XXXXXXX.X");
+        do Marciano.fila(d, 3, "XXX.XXX.XXX");
+        do Marciano.fila(d, 4, "XXXXXXXXXXX");
+        do Marciano.fila(d, 5, ".XXXXXXXXX.");
+        do Marciano.fila(d, 6, "..X.....X..");
+        do Marciano.fila(d, 7, ".X.......X.");
+
+        let d = Array.new(16); // explosion
+        let dibujos[4] = d;
+        do Marciano.fila(d, 0, ".X...X...X.");
+        do Marciano.fila(d, 1, "..X..X..X..");
+        do Marciano.fila(d, 2, "...X...X...");
+        do Marciano.fila(d, 3, "XX.......XX");
+        do Marciano.fila(d, 4, "...X...X...");
+        do Marciano.fila(d, 5, "..X..X..X..");
+        do Marciano.fila(d, 6, ".X...X...X.");
+        do Marciano.fila(d, 7, "...........");
+        return;
+    }
+
+    // Pasa una fila de X y puntos a numeros de 16 bits. Cada X ocupa 2 pixeles de ancho,
+    // asi que una fila no cabe en un solo numero y se guarda en dos (izq y der).
+    function void fila(Array dibujo, int f, String arte) {
+        var int i, lado, bit, izq, der;
+
+        let bit = 1;
+        let i = 0;
+        while (i < arte.length()) {
+            if (arte.charAt(i) = 88) { // 88 es la X
+                if (lado = 0) {
+                    let izq = izq | bit | (bit + bit);
+                } else {
+                    let der = der | bit | (bit + bit);
+                }
+            }
+            let bit = bit + bit + bit + bit; // sumar asi corre el bit 2 posiciones
+            if (bit = 0) {                   // se acabo el numero, sigue el de la derecha
+                let bit = 1;
+                let lado = 1;
+            }
+            let i = i + 1;
+        }
+        let dibujo[f + f] = izq;
+        let dibujo[f + f + 1] = der;
+        do arte.dispose();
+        return;
+    }
+
+    function void liberarDibujos() {
+        var int i;
+        var Array d;
+
+        while (i < 5) {
+            let d = dibujos[i];
+            do d.dispose();
+            let i = i + 1;
+        }
+        do dibujos.dispose();
+        return;
+    }
+
+    // Copia un dibujo a la pantalla. Cada fila se pinta dos veces para que quede mas alto.
+    function void pintar(int posX, int posY, Array dibujo) {
+        var int dir, i;
+
+        let dir = (posY * 32) + (posX / 16);
+        while (i < 16) {
+            let pantalla[dir] = dibujo[i];
+            let pantalla[dir + 1] = dibujo[i + 1];
+            let pantalla[dir + 32] = dibujo[i];
+            let pantalla[dir + 33] = dibujo[i + 1];
+            let dir = dir + 64;
+            let i = i + 2;
+        }
+        return;
+    }
+
+    constructor Marciano new(int posX, int posY, int t) {
+        let x = posX;
+        let y = posY;
+        let tipo = t;
+        let cuadro = 0;
+        let vivo = true;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void dibujar() {
+        do Marciano.pintar(x, y, dibujos[tipo + tipo + cuadro]);
+        return;
+    }
+
+    method void borrar() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + 21, y + 15);
+        return;
+    }
+
+    // Da un paso y cambia de dibujo para que parezca que mueve las patas.
+    method void mover(int pasoX, int pasoY) {
+        do borrar();
+        let x = x + pasoX;
+        let y = y + pasoY;
+        let cuadro = 1 - cuadro;
+        do dibujar();
+        return;
+    }
+
+    // Muestra la explosion un momento, lo quita y devuelve sus puntos.
+    method int explotar() {
+        do Marciano.pintar(x, y, dibujos[4]);
+        do Sys.wait(80);
+        do borrar();
+        let vivo = false;
+        return 20 - (tipo * 10);
+    }
+
+    method boolean estaVivo() {
+        return vivo;
+    }
+
+    method boolean chocaCon(Bala bala) {
+        return vivo & bala.choca(x, y, 22, 16);
+    }
+
+    // Revisa si con el siguiente paso se sale del tablero.
+    method boolean tocaPared(int paso) {
+        return vivo & (((x + paso) < 16) | ((x + paso) > 464));
+    }
+
+    method boolean llegoA(int linea) {
+        return vivo & ((y + 16) > linea);
+    }
+}

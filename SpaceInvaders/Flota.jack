@@ -1,0 +1,130 @@
+// Los 12 marcianos juntos: 3 filas de 4 que bajan cada vez que tocan una pared.
+class Flota {
+    field Array marcianos;
+    field int vivos, espera, paso;
+
+    constructor Flota new() {
+        var int fila, col;
+
+        let marcianos = Array.new(12);
+        while (fila < 3) {
+            let col = 0;
+            while (col < 4) {
+                // la fila de arriba es de calamares y las otras dos de cangrejos
+                let marcianos[(fila * 4) + col] = Marciano.new(32 + (col * 64), 24 + (fila * 24), Math.min(fila, 1));
+                let col = col + 1;
+            }
+            let fila = fila + 1;
+        }
+        let vivos = 12;
+        let espera = 0;
+        let paso = 16;
+        return this;
+    }
+
+    method void dispose() {
+        var int i;
+        var Marciano m;
+
+        while (i < 12) {
+            let m = marcianos[i];
+            do m.dispose();
+            let i = i + 1;
+        }
+        do marcianos.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void dibujar() {
+        var int i;
+        var Marciano m;
+
+        while (i < 12) {
+            let m = marcianos[i];
+            do m.dibujar();
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // Entre menos marcianos quedan, menos espera la flota y mas rapido va.
+    method void mover() {
+        let espera = espera + 1;
+        if (espera > vivos) {
+            let espera = 0;
+            do avanzar();
+        }
+        return;
+    }
+
+    method void avanzar() {
+        var int i, pasoX, pasoY;
+        var Marciano m;
+
+        let pasoX = paso;
+        if (tocaPared()) { // en vez de seguir de lado, bajan y cambian de direccion
+            let paso = -paso;
+            let pasoX = 0;
+            let pasoY = 16;
+        }
+        while (i < 12) {
+            let m = marcianos[i];
+            if (m.estaVivo()) {
+                do m.mover(pasoX, pasoY);
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method boolean tocaPared() {
+        var int i;
+        var Marciano m;
+
+        while (i < 12) {
+            let m = marcianos[i];
+            if (m.tocaPared(paso)) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    // Si la bala le da a un marciano lo elimina y devuelve sus puntos. Si no, devuelve 0.
+    method int recibirDisparo(Bala bala) {
+        var int i;
+        var Marciano m;
+
+        while (i < 12) {
+            let m = marcianos[i];
+            if (m.chocaCon(bala)) {
+                do bala.apagar();
+                let vivos = vivos - 1;
+                return m.explotar();
+            }
+            let i = i + 1;
+        }
+        return 0;
+    }
+
+    // Revisa si algun marciano ya llego a la linea.
+    method boolean llego() {
+        var int i;
+        var Marciano m;
+
+        while (i < 12) {
+            let m = marcianos[i];
+            if (m.llegoA(Tablero.alturaLinea())) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    method int vivos() {
+        return vivos;
+    }
+}

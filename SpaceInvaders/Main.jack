@@ -1,22 +1,24 @@
-/** Punto de entrada: pantalla de inicio y una partida tras otra hasta que el jugador salga. */
+// Aqui arranca el programa: muestra el inicio y juega hasta que el jugador salga.
 class Main {
 
     function void main() {
-        var Game game;
-        var boolean playing;
+        var Juego juego;
+        var boolean seguir;
 
-        do Alien.init();
-        let playing = Screens.title();
-        while (playing) {
-            let game = Game.new();
-            let playing = game.run();
-            if (playing) {
-                let playing = Screens.end(game.won(), game.score());
+        do Marciano.cargarDibujos();
+        let seguir = Pantallas.inicio();
+
+        while (seguir) {
+            let juego = Juego.new();
+            let seguir = juego.jugar();   // da false si oprimio Q
+            if (seguir) {
+                let seguir = Pantallas.fin(juego.gano(), juego.puntos());
             }
-            do game.dispose();
+            do juego.dispose();
         }
-        do Screens.goodbye();
-        do Alien.cleanup();
+
+        do Pantallas.despedida();
+        do Marciano.liberarDibujos();
         return;
     }
 }

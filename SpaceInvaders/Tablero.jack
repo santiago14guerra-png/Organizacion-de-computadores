@@ -1,0 +1,73 @@
+// El escenario: paredes, linea de defensa, suelo y los datos de arriba.
+class Tablero {
+    field int puntos, marcianos;
+
+    constructor Tablero new(int total) {
+        let puntos = 0;
+        let marcianos = total;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // Altura de la linea: si un marciano la toca, se pierde.
+    function int alturaLinea() {
+        return 204;
+    }
+
+    method void dibujar() {
+        var int x;
+
+        do borrar();
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0, 14, 511, 15);    // raya debajo de los datos
+        do Screen.drawRectangle(2, 16, 3, 235);     // pared izquierda
+        do Screen.drawRectangle(508, 16, 509, 235); // pared derecha
+        do Screen.drawRectangle(0, 236, 511, 255);  // suelo
+
+        // La linea punteada y las ventanitas del suelo van en el mismo ciclo
+        let x = 8;
+        while (x < 500) {
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x, Tablero.alturaLinea(), x + 7, Tablero.alturaLinea() + 1);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, 241, x + 3, 244);
+            do Screen.drawRectangle(x + 8, 248, x + 11, 251);
+            let x = x + 16;
+        }
+
+        do Pantallas.texto(0, 2, "PUNTOS:");
+        do Pantallas.texto(0, 25, "SPACE INVADERS");
+        do Pantallas.texto(0, 48, "MARCIANOS:");
+        do mostrarDatos();
+        return;
+    }
+
+    method void borrar() {
+        do Screen.clearScreen();
+        return;
+    }
+
+    method void sumarPuntos(int ganados, int quedan) {
+        let puntos = puntos + ganados;
+        let marcianos = quedan;
+        do mostrarDatos();
+        return;
+    }
+
+    method void mostrarDatos() {
+        do Output.moveCursor(0, 10);
+        do Output.printInt(puntos);
+        do Output.moveCursor(0, 59);
+        do Output.printInt(marcianos);
+        do Output.printChar(32); // espacio: si pasa de 10 a 9 borra el otro digito
+        return;
+    }
+
+    method int puntos() {
+        return puntos;
+    }
+}

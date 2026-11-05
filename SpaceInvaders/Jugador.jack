@@ -1,0 +1,63 @@
+// El terricola: un astronauta hecho con figuras de Screen.
+class Jugador {
+    field int x; // borde izquierdo, la altura no cambia porque camina por el suelo
+
+    constructor Jugador new() {
+        let x = 246;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void dibujar() {
+        do Screen.setColor(true);
+        do Screen.drawCircle(x + 9, 214, 7);               // casco
+        do Screen.drawRectangle(x + 4, 222, x + 14, 231);  // traje
+        do Screen.drawRectangle(x + 4, 232, x + 8, 235);   // pierna izquierda
+        do Screen.drawRectangle(x + 10, 232, x + 14, 235); // pierna derecha
+        do Screen.drawRectangle(x, 223, x + 3, 230);       // mochila
+        do Screen.drawRectangle(x + 15, 224, x + 18, 226); // brazo
+        do Screen.drawRectangle(x + 17, 207, x + 19, 227); // arma
+
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 5, 212, x + 13, 216);  // visor
+        do Screen.drawRectangle(x + 4, 227, x + 14, 227);  // cinturon
+
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 7, 213, x + 8, 215);   // ojo izquierdo
+        do Screen.drawRectangle(x + 11, 213, x + 12, 215); // ojo derecho
+        return;
+    }
+
+    method void borrar() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, 206, x + 19, 235);
+        return;
+    }
+
+    method void moverIzq() {
+        if (x > 8) {
+            do borrar();
+            let x = Math.max(x - 6, 8);
+            do dibujar();
+        }
+        return;
+    }
+
+    method void moverDer() {
+        if (x < 484) {
+            do borrar();
+            let x = Math.min(x + 6, 484);
+            do dibujar();
+        }
+        return;
+    }
+
+    // De aqui sale la bala
+    method int posArma() {
+        return x + 17;
+    }
+}

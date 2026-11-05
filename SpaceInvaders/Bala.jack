@@ -1,0 +1,63 @@
+// El disparo del terricola. Solo puede haber una bala a la vez.
+class Bala {
+    field int x, y;
+    field boolean activa;
+
+    constructor Bala new() {
+        let activa = false;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void dibujar() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 2, y + 7);
+        return;
+    }
+
+    method void borrar() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + 2, y + 7);
+        return;
+    }
+
+    // Sale justo encima de la linea para no borrarla cuando pasa.
+    method void disparar(int posArma) {
+        if (~activa) {
+            let x = posArma;
+            let y = Tablero.alturaLinea() - 8;
+            let activa = true;
+            do dibujar();
+        }
+        return;
+    }
+
+    // Sube la bala. Cuando llega arriba se apaga.
+    method void mover() {
+        if (activa) {
+            do borrar();
+            let y = y - 8;
+            if (y < 18) {
+                let activa = false;
+            } else {
+                do dibujar();
+            }
+        }
+        return;
+    }
+
+    method void apagar() {
+        do borrar();
+        let activa = false;
+        return;
+    }
+
+    // Revisa si la bala se cruza con una caja, por ejemplo la de un marciano.
+    method boolean choca(int cajaX, int cajaY, int ancho, int alto) {
+        return activa & (x < (cajaX + ancho)) & ((x + 3) > cajaX) & (y < (cajaY + alto)) & ((y + 8) > cajaY);
+    }
+}

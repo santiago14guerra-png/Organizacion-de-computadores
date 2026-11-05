@@ -1,0 +1,127 @@
+// Las pantallas de inicio y de fin, y funciones para escribir en ellas.
+class Pantallas {
+
+    // Escribe un texto y lo libera, porque en Jack cada texto entre comillas ocupa memoria.
+    function void texto(int fila, int col, String s) {
+        do Output.moveCursor(fila, col);
+        do Output.printString(s);
+        do s.dispose();
+        return;
+    }
+
+    // Dibuja centrada una fila de letras grandes: cada X es un cuadrito de lado tam.
+    function void letras(String arte, int y, int tam) {
+        var int i, x;
+
+        do Screen.setColor(true);
+        let x = 256 - ((arte.length() * tam) / 2);
+        while (i < arte.length()) {
+            if (arte.charAt(i) = 88) { // 88 es la X
+                do Screen.drawRectangle(x, y, x + tam - 1, y + tam - 1);
+            }
+            let x = x + tam;
+            let i = i + 1;
+        }
+        do arte.dispose();
+        return;
+    }
+
+    // Las dos franjas de arriba y abajo.
+    function void marco() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(8, 6, 503, 9);
+        do Screen.drawRectangle(8, 246, 503, 249);
+        return;
+    }
+
+    function void mostrarMarciano(int x, int y, int tipo) {
+        var Marciano m;
+
+        let m = Marciano.new(x, y, tipo);
+        do m.dibujar();
+        do m.dispose();
+        return;
+    }
+
+    // Espera hasta que opriman la tecla pedida (true) o Q (false).
+    function boolean esperarTecla(char pedida) {
+        var char tecla;
+
+        while (true) {
+            let tecla = Keyboard.keyPressed();
+            if (tecla = pedida) {
+                return true;
+            }
+            if (tecla = 81) { // Q
+                return false;
+            }
+            do Sys.wait(50);
+        }
+        return false;
+    }
+
+    // Devuelve true si el jugador quiere empezar.
+    function boolean inicio() {
+        do Screen.clearScreen();
+        do Pantallas.marco();
+
+        do Pantallas.letras("XXXX XXXX .XX. .XXX XXXX", 20, 6);
+        do Pantallas.letras("X... X..X X..X X... X...", 26, 6);
+        do Pantallas.letras("XXXX XXXX XXXX X... XXX.", 32, 6);
+        do Pantallas.letras("...X X... X..X X... X...", 38, 6);
+        do Pantallas.letras("XXXX X... X..X .XXX XXXX", 44, 6);
+
+        do Pantallas.letras("XXX X..X X..X .XX. XXX. XXXX XXX. XXXX", 58, 6);
+        do Pantallas.letras(".X. XX.X X..X X..X X..X X... X..X X...", 64, 6);
+        do Pantallas.letras(".X. X.XX X..X XXXX X..X XXX. XXX. XXXX", 70, 6);
+        do Pantallas.letras(".X. X..X .XX. X..X X..X X... X.X. ...X", 76, 6);
+        do Pantallas.letras("XXX X..X .XX. X..X XXX. XXXX X..X XXXX", 82, 6);
+
+        do Pantallas.mostrarMarciano(192, 106, 0);
+        do Pantallas.texto(10, 28, "= 20 PUNTOS");
+        do Pantallas.mostrarMarciano(192, 128, 1);
+        do Pantallas.texto(12, 28, "= 10 PUNTOS");
+
+        do Pantallas.texto(15, 4, "Derriba a los 12 marcianos antes de que crucen la linea");
+        do Pantallas.texto(17, 9, "Flechas: mover   Espacio: disparar   Q: salir");
+        do Pantallas.texto(20, 19, "Presiona ENTER para jugar");
+
+        return Pantallas.esperarTecla(128);
+    }
+
+    // Pantalla del final. Devuelve true si quiere jugar otra vez.
+    function boolean fin(boolean gano, int puntos) {
+        do Screen.clearScreen();
+        do Pantallas.marco();
+
+        if (gano) {
+            do Pantallas.letras("X..X XXX .XXX XXX .XX. XXX. XXX .XX.", 40, 8);
+            do Pantallas.letras("X..X .X. X... .X. X..X X..X .X. X..X", 48, 8);
+            do Pantallas.letras("X..X .X. X... .X. X..X XXX. .X. XXXX", 56, 8);
+            do Pantallas.letras(".XX. .X. X... .X. X..X X.X. .X. X..X", 64, 8);
+            do Pantallas.letras(".XX. XXX .XXX .X. .XX. X..X XXX X..X", 72, 8);
+            do Pantallas.texto(11, 20, "La Tierra esta a salvo!");
+        } else {
+            do Pantallas.letras(".XXX .XX. X...X XXXX  .XX. X..X XXXX XXX.", 40, 8);
+            do Pantallas.letras("X... X..X XX.XX X...  X..X X..X X... X..X", 48, 8);
+            do Pantallas.letras("X.XX XXXX X.X.X XXX.  X..X X..X XXX. XXX.", 56, 8);
+            do Pantallas.letras("X..X X..X X...X X...  X..X .XX. X... X.X.", 64, 8);
+            do Pantallas.letras(".XXX X..X X...X XXXX  .XX. .XX. XXXX X..X", 72, 8);
+            do Pantallas.mostrarMarciano(144, 112, 0);
+            do Pantallas.mostrarMarciano(240, 112, 1);
+            do Pantallas.mostrarMarciano(336, 112, 0);
+        }
+
+        do Pantallas.texto(14, 24, "Puntaje final: ");
+        do Output.printInt(puntos);
+        do Pantallas.texto(17, 17, "R: jugar de nuevo     Q: salir");
+
+        return Pantallas.esperarTecla(82);
+    }
+
+    function void despedida() {
+        do Screen.clearScreen();
+        do Pantallas.texto(11, 24, "Gracias por jugar!");
+        return;
+    }
+}

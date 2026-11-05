@@ -1,0 +1,71 @@
+// Una partida: crea todo lo que sale en pantalla y tiene el bucle principal.
+class Juego {
+    field Tablero tablero;
+    field Jugador jugador;
+    field Bala bala;
+    field Flota flota;
+
+    constructor Juego new() {
+        let tablero = Tablero.new(12);
+        let jugador = Jugador.new();
+        let bala = Bala.new();
+        let flota = Flota.new();
+        do tablero.dibujar();
+        do jugador.dibujar();
+        do flota.dibujar();
+        return this;
+    }
+
+    method void dispose() {
+        do tablero.dispose();
+        do jugador.dispose();
+        do bala.dispose();
+        do flota.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // Se repite hasta ganar o perder. Devuelve false si el jugador salio con Q.
+    method boolean jugar() {
+        var char tecla;
+        var int puntos;
+
+        while (~(gano() | flota.llego())) {
+            let tecla = Keyboard.keyPressed();
+
+            if (tecla = 81) { // Q
+                return false;
+            }
+            if (tecla = 130) { // flecha izquierda
+                do jugador.moverIzq();
+            }
+            if (tecla = 132) { // flecha derecha
+                do jugador.moverDer();
+            }
+            if (tecla = 32) { // espacio
+                do bala.disparar(jugador.posArma());
+            }
+
+            do bala.mover();
+            do flota.mover();
+
+            let puntos = flota.recibirDisparo(bala);
+            if (puntos > 0) {
+                do tablero.sumarPuntos(puntos, flota.vivos());
+            }
+
+            do Sys.wait(40);
+        }
+
+        do tablero.borrar();
+        return true;
+    }
+
+    method boolean gano() {
+        return flota.vivos() = 0;
+    }
+
+    method int puntos() {
+        return tablero.puntos();
+    }
+}
