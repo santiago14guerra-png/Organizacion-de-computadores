@@ -59,13 +59,13 @@ Cada figura se borra, cambia de posición y se vuelve a dibujar. El bucle de `Ju
 
 ## Historial de versiones
 
-El repositorio guarda las versiones anteriores en el historial de git (`git log -- SpaceInvaders`). Las versiones previas al último commit se reconstruyeron a partir del registro de trabajo.
+Las versiones anteriores están en el historial de git (`git log -- SpaceInvaders`) y se subieron al repositorio al terminar el desarrollo.
 
-| Versión | Problema que tenía |
+| Versión | Qué pasaba |
 |---|---|
-| Borrador inicial | No compilaba: `posx` en vez de `posX`, `funtion`, `main` sin `void`, y `borrarCirculo` pintaba en negro |
-| v1 | Primera versión completa, con nombres en inglés. Letras grandes con huecos y textos del inicio descentrados |
-| v2 | Todo en español, pero muy lento: `Sys.wait(40)` daba unos 41 ms por vuelta |
-| v3 | Más rápido (`Sys.wait(15)`), pero los marcianos usaban dibujos de bits difíciles de explicar |
-| v4 | Marcianos más simples, pero seguían con bits |
+| Borrador | No compilaba por errores de escritura en el código |
+| v1 y v1.1 | Primera versión completa; letras con huecos y textos del inicio descentrados |
+| v2 | Código en español, pero muy lento |
+| v3 | Más rápido, pero los marcianos usaban dibujos de bits difíciles de explicar |
+| v4 | Marcianos más simples, pero aún con bits |
 | v5 (final) | Marcianos dibujados con `Screen`, igual que el terrícola |
