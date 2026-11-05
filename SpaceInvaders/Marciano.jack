@@ -3,7 +3,7 @@
 class Marciano {
     static Array pantalla, dibujos;
 
-    field int x, y, tipo, cuadro; // tipo 0 = calamar (20 puntos), tipo 1 = cangrejo (10 puntos)
+    field int x, y, tipo, cuadro; // tipo 0 = redondo (20 puntos), tipo 1 = cuadrado (10 puntos)
     field boolean vivo;
 
     // Prepara los dibujos una sola vez, al abrir el juego. Cada X es un pixel.
@@ -13,49 +13,49 @@ class Marciano {
         let pantalla = 16384;
         let dibujos = Array.new(5);
 
-        let d = Array.new(16); // calamar, patas abiertas
+        let d = Array.new(16); // redondo, patas abiertas
         let dibujos[0] = d;
-        do Marciano.fila(d, 0, "....XX.....");
-        do Marciano.fila(d, 1, "...XXXX....");
-        do Marciano.fila(d, 2, "..XXXXXX...");
-        do Marciano.fila(d, 3, ".XX.XX.XX..");
-        do Marciano.fila(d, 4, ".XXXXXXXX..");
-        do Marciano.fila(d, 5, "...X..X....");
-        do Marciano.fila(d, 6, "..X.XX.X...");
-        do Marciano.fila(d, 7, ".X.X..X.X..");
+        do Marciano.fila(d, 0, "...XXXXX...");
+        do Marciano.fila(d, 1, "..XXXXXXX..");
+        do Marciano.fila(d, 2, ".XXXXXXXXX.");
+        do Marciano.fila(d, 3, ".XX..X..XX.");
+        do Marciano.fila(d, 4, ".XXXXXXXXX.");
+        do Marciano.fila(d, 5, "..XXXXXXX..");
+        do Marciano.fila(d, 6, "..X.....X..");
+        do Marciano.fila(d, 7, ".X.......X.");
 
-        let d = Array.new(16); // calamar, patas cerradas
+        let d = Array.new(16); // redondo, patas cerradas
         let dibujos[1] = d;
-        do Marciano.fila(d, 0, "....XX.....");
-        do Marciano.fila(d, 1, "...XXXX....");
-        do Marciano.fila(d, 2, "..XXXXXX...");
-        do Marciano.fila(d, 3, ".XX.XX.XX..");
-        do Marciano.fila(d, 4, ".XXXXXXXX..");
-        do Marciano.fila(d, 5, "..X.XX.X...");
-        do Marciano.fila(d, 6, ".X......X..");
-        do Marciano.fila(d, 7, "..X....X...");
+        do Marciano.fila(d, 0, "...XXXXX...");
+        do Marciano.fila(d, 1, "..XXXXXXX..");
+        do Marciano.fila(d, 2, ".XXXXXXXXX.");
+        do Marciano.fila(d, 3, ".XX..X..XX.");
+        do Marciano.fila(d, 4, ".XXXXXXXXX.");
+        do Marciano.fila(d, 5, "..XXXXXXX..");
+        do Marciano.fila(d, 6, "...X...X...");
+        do Marciano.fila(d, 7, "...X...X...");
 
-        let d = Array.new(16); // cangrejo, brazos abajo
+        let d = Array.new(16); // cuadrado con antenas, patas abiertas
         let dibujos[2] = d;
         do Marciano.fila(d, 0, "..X.....X..");
         do Marciano.fila(d, 1, "...X...X...");
         do Marciano.fila(d, 2, "..XXXXXXX..");
-        do Marciano.fila(d, 3, ".XX.XXX.XX.");
-        do Marciano.fila(d, 4, "XXXXXXXXXXX");
-        do Marciano.fila(d, 5, "X.XXXXXXX.X");
-        do Marciano.fila(d, 6, "X.X.....X.X");
-        do Marciano.fila(d, 7, "...XX.XX...");
+        do Marciano.fila(d, 3, "..X.XXX.X..");
+        do Marciano.fila(d, 4, "..XXXXXXX..");
+        do Marciano.fila(d, 5, "..XXXXXXX..");
+        do Marciano.fila(d, 6, "..X.....X..");
+        do Marciano.fila(d, 7, ".XX.....XX.");
 
-        let d = Array.new(16); // cangrejo, brazos arriba
+        let d = Array.new(16); // cuadrado con antenas, patas cerradas
         let dibujos[3] = d;
         do Marciano.fila(d, 0, "..X.....X..");
-        do Marciano.fila(d, 1, "X..X...X..X");
-        do Marciano.fila(d, 2, "X.XXXXXXX.X");
-        do Marciano.fila(d, 3, "XXX.XXX.XXX");
-        do Marciano.fila(d, 4, "XXXXXXXXXXX");
-        do Marciano.fila(d, 5, ".XXXXXXXXX.");
-        do Marciano.fila(d, 6, "..X.....X..");
-        do Marciano.fila(d, 7, ".X.......X.");
+        do Marciano.fila(d, 1, "...X...X...");
+        do Marciano.fila(d, 2, "..XXXXXXX..");
+        do Marciano.fila(d, 3, "..X.XXX.X..");
+        do Marciano.fila(d, 4, "..XXXXXXX..");
+        do Marciano.fila(d, 5, "..XXXXXXX..");
+        do Marciano.fila(d, 6, "...X...X...");
+        do Marciano.fila(d, 7, "...XX..XX..");
 
         let d = Array.new(16); // explosion
         let dibujos[4] = d;

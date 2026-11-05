@@ -10,7 +10,7 @@ class Flota {
         while (fila < 3) {
             let col = 0;
             while (col < 4) {
-                // la fila de arriba es de calamares y las otras dos de cangrejos
+                // la fila de arriba es de redondos y las otras dos de cuadrados
                 let marcianos[(fila * 4) + col] = Marciano.new(32 + (col * 64), 24 + (fila * 24), Math.min(fila, 1));
                 let col = col + 1;
             }
