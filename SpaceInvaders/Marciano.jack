@@ -1,131 +1,7 @@
-// Un marciano. Se dibuja escribiendo directo en la memoria de la pantalla,
-// por eso su x siempre es multiplo de 16.
+// Un marciano hecho con figuras de Screen, igual que el terricola.
 class Marciano {
-    static Array pantalla, dibujos;
-
     field int x, y, tipo, cuadro; // tipo 0 = redondo (20 puntos), tipo 1 = cuadrado (10 puntos)
     field boolean vivo;
-
-    // Prepara los dibujos una sola vez, al abrir el juego. Cada X es un pixel.
-    function void cargarDibujos() {
-        var Array d;
-
-        let pantalla = 16384;
-        let dibujos = Array.new(5);
-
-        let d = Array.new(16); // redondo, patas abiertas
-        let dibujos[0] = d;
-        do Marciano.fila(d, 0, "...XXXXX...");
-        do Marciano.fila(d, 1, "..XXXXXXX..");
-        do Marciano.fila(d, 2, ".XXXXXXXXX.");
-        do Marciano.fila(d, 3, ".XX..X..XX.");
-        do Marciano.fila(d, 4, ".XXXXXXXXX.");
-        do Marciano.fila(d, 5, "..XXXXXXX..");
-        do Marciano.fila(d, 6, "..X.....X..");
-        do Marciano.fila(d, 7, ".X.......X.");
-
-        let d = Array.new(16); // redondo, patas cerradas
-        let dibujos[1] = d;
-        do Marciano.fila(d, 0, "...XXXXX...");
-        do Marciano.fila(d, 1, "..XXXXXXX..");
-        do Marciano.fila(d, 2, ".XXXXXXXXX.");
-        do Marciano.fila(d, 3, ".XX..X..XX.");
-        do Marciano.fila(d, 4, ".XXXXXXXXX.");
-        do Marciano.fila(d, 5, "..XXXXXXX..");
-        do Marciano.fila(d, 6, "...X...X...");
-        do Marciano.fila(d, 7, "...X...X...");
-
-        let d = Array.new(16); // cuadrado con antenas, patas abiertas
-        let dibujos[2] = d;
-        do Marciano.fila(d, 0, "..X.....X..");
-        do Marciano.fila(d, 1, "...X...X...");
-        do Marciano.fila(d, 2, "..XXXXXXX..");
-        do Marciano.fila(d, 3, "..X.XXX.X..");
-        do Marciano.fila(d, 4, "..XXXXXXX..");
-        do Marciano.fila(d, 5, "..XXXXXXX..");
-        do Marciano.fila(d, 6, "..X.....X..");
-        do Marciano.fila(d, 7, ".XX.....XX.");
-
-        let d = Array.new(16); // cuadrado con antenas, patas cerradas
-        let dibujos[3] = d;
-        do Marciano.fila(d, 0, "..X.....X..");
-        do Marciano.fila(d, 1, "...X...X...");
-        do Marciano.fila(d, 2, "..XXXXXXX..");
-        do Marciano.fila(d, 3, "..X.XXX.X..");
-        do Marciano.fila(d, 4, "..XXXXXXX..");
-        do Marciano.fila(d, 5, "..XXXXXXX..");
-        do Marciano.fila(d, 6, "...X...X...");
-        do Marciano.fila(d, 7, "...XX..XX..");
-
-        let d = Array.new(16); // explosion
-        let dibujos[4] = d;
-        do Marciano.fila(d, 0, ".X...X...X.");
-        do Marciano.fila(d, 1, "..X..X..X..");
-        do Marciano.fila(d, 2, "...X...X...");
-        do Marciano.fila(d, 3, "XX.......XX");
-        do Marciano.fila(d, 4, "...X...X...");
-        do Marciano.fila(d, 5, "..X..X..X..");
-        do Marciano.fila(d, 6, ".X...X...X.");
-        do Marciano.fila(d, 7, "...........");
-        return;
-    }
-
-    // Pasa una fila de X y puntos a numeros de 16 bits. Cada X ocupa 2 pixeles de ancho,
-    // asi que una fila no cabe en un solo numero y se guarda en dos (izq y der).
-    function void fila(Array dibujo, int f, String arte) {
-        var int i, lado, bit, izq, der;
-
-        let bit = 1;
-        let i = 0;
-        while (i < arte.length()) {
-            if (arte.charAt(i) = 88) { // 88 es la X
-                if (lado = 0) {
-                    let izq = izq | bit | (bit + bit);
-                } else {
-                    let der = der | bit | (bit + bit);
-                }
-            }
-            let bit = bit + bit + bit + bit; // sumar asi corre el bit 2 posiciones
-            if (bit = 0) {                   // se acabo el numero, sigue el de la derecha
-                let bit = 1;
-                let lado = 1;
-            }
-            let i = i + 1;
-        }
-        let dibujo[f + f] = izq;
-        let dibujo[f + f + 1] = der;
-        do arte.dispose();
-        return;
-    }
-
-    function void liberarDibujos() {
-        var int i;
-        var Array d;
-
-        while (i < 5) {
-            let d = dibujos[i];
-            do d.dispose();
-            let i = i + 1;
-        }
-        do dibujos.dispose();
-        return;
-    }
-
-    // Copia un dibujo a la pantalla. Cada fila se pinta dos veces para que quede mas alto.
-    function void pintar(int posX, int posY, Array dibujo) {
-        var int dir, i;
-
-        let dir = (posY * 32) + (posX / 16);
-        while (i < 16) {
-            let pantalla[dir] = dibujo[i];
-            let pantalla[dir + 1] = dibujo[i + 1];
-            let pantalla[dir + 32] = dibujo[i];
-            let pantalla[dir + 33] = dibujo[i + 1];
-            let dir = dir + 64;
-            let i = i + 2;
-        }
-        return;
-    }
 
     constructor Marciano new(int posX, int posY, int t) {
         let x = posX;
@@ -142,7 +18,24 @@ class Marciano {
     }
 
     method void dibujar() {
-        do Marciano.pintar(x, y, dibujos[tipo + tipo + cuadro]);
+        do Screen.setColor(true);
+        if (tipo = 0) {
+            do Screen.drawCircle(x + 11, y + 7, 7);
+        } else {
+            do Screen.drawRectangle(x + 4, y + 1, x + 18, y + 12);
+        }
+
+        if (cuadro = 0) { // patas abiertas
+            do Screen.drawRectangle(x + 5, y + 13, x + 7, y + 15);
+            do Screen.drawRectangle(x + 15, y + 13, x + 17, y + 15);
+        } else {          // patas cerradas
+            do Screen.drawRectangle(x + 8, y + 13, x + 9, y + 15);
+            do Screen.drawRectangle(x + 13, y + 13, x + 14, y + 15);
+        }
+
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 7, y + 4, x + 9, y + 6);   // ojo izquierdo
+        do Screen.drawRectangle(x + 13, y + 4, x + 15, y + 6); // ojo derecho
         return;
     }
 
@@ -152,7 +45,7 @@ class Marciano {
         return;
     }
 
-    // Da un paso y cambia de dibujo para que parezca que mueve las patas.
+    // Para moverse se borra, cambia de posicion y se dibuja otra vez alternando las patas.
     method void mover(int pasoX, int pasoY) {
         do borrar();
         let x = x + pasoX;
@@ -162,9 +55,12 @@ class Marciano {
         return;
     }
 
-    // Muestra la explosion un momento, lo quita y devuelve sus puntos.
+    // Muestra una X un momento, la quita y devuelve sus puntos.
     method int explotar() {
-        do Marciano.pintar(x, y, dibujos[4]);
+        do borrar();
+        do Screen.setColor(true);
+        do Screen.drawLine(x + 3, y + 1, x + 18, y + 14);
+        do Screen.drawLine(x + 18, y + 1, x + 3, y + 14);
         do Sys.wait(80);
         do borrar();
         let vivo = false;

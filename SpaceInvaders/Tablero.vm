@@ -1,0 +1,237 @@
+function Tablero.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push constant 0
+pop this 0
+push argument 0
+pop this 1
+push pointer 0
+return
+function Tablero.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Tablero.alturaLinea 0
+push constant 204
+return
+function Tablero.dibujar 1
+push argument 0
+pop pointer 0
+push pointer 0
+call Tablero.borrar 1
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 14
+push constant 511
+push constant 15
+call Screen.drawRectangle 4
+pop temp 0
+push constant 2
+push constant 16
+push constant 3
+push constant 235
+call Screen.drawRectangle 4
+pop temp 0
+push constant 508
+push constant 16
+push constant 509
+push constant 235
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+push constant 236
+push constant 511
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 8
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 500
+lt
+not
+if-goto WHILE_END0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push local 0
+call Tablero.alturaLinea 0
+push local 0
+push constant 7
+add
+call Tablero.alturaLinea 0
+push constant 1
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 0
+push constant 241
+push local 0
+push constant 3
+add
+push constant 244
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+push constant 8
+add
+push constant 248
+push local 0
+push constant 11
+add
+push constant 251
+call Screen.drawRectangle 4
+pop temp 0
+push local 0
+push constant 16
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+push constant 2
+push constant 7
+call String.new 1
+push constant 80
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+call Pantallas.texto 3
+pop temp 0
+push constant 0
+push constant 25
+push constant 14
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 80
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 67
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 86
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 68
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+call Pantallas.texto 3
+pop temp 0
+push constant 0
+push constant 48
+push constant 10
+call String.new 1
+push constant 77
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 67
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+call Pantallas.texto 3
+pop temp 0
+push pointer 0
+call Tablero.mostrarDatos 1
+pop temp 0
+push constant 0
+return
+function Tablero.borrar 0
+push argument 0
+pop pointer 0
+call Screen.clearScreen 0
+pop temp 0
+push constant 0
+return
+function Tablero.sumarPuntos 0
+push argument 0
+pop pointer 0
+push this 0
+push argument 1
+add
+pop this 0
+push argument 2
+pop this 1
+push pointer 0
+call Tablero.mostrarDatos 1
+pop temp 0
+push constant 0
+return
+function Tablero.mostrarDatos 0
+push argument 0
+pop pointer 0
+push constant 0
+push constant 10
+call Output.moveCursor 2
+pop temp 0
+push this 0
+call Output.printInt 1
+pop temp 0
+push constant 0
+push constant 59
+call Output.moveCursor 2
+pop temp 0
+push this 1
+call Output.printInt 1
+pop temp 0
+push constant 32
+call Output.printChar 1
+pop temp 0
+push constant 0
+return
+function Tablero.puntos 0
+push argument 0
+pop pointer 0
+push this 0
+return

@@ -1,0 +1,208 @@
+function Jugador.new 0
+push constant 1
+call Memory.alloc 1
+pop pointer 0
+push constant 246
+pop this 0
+push pointer 0
+return
+function Jugador.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Jugador.dibujar 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 9
+add
+push constant 214
+push constant 7
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+push constant 4
+add
+push constant 222
+push this 0
+push constant 14
+add
+push constant 231
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 4
+add
+push constant 232
+push this 0
+push constant 8
+add
+push constant 235
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 10
+add
+push constant 232
+push this 0
+push constant 14
+add
+push constant 235
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 223
+push this 0
+push constant 3
+add
+push constant 230
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 15
+add
+push constant 224
+push this 0
+push constant 18
+add
+push constant 226
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 17
+add
+push constant 207
+push this 0
+push constant 19
+add
+push constant 227
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 5
+add
+push constant 212
+push this 0
+push constant 13
+add
+push constant 216
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 4
+add
+push constant 227
+push this 0
+push constant 14
+add
+push constant 227
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 7
+add
+push constant 213
+push this 0
+push constant 8
+add
+push constant 215
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 11
+add
+push constant 213
+push this 0
+push constant 12
+add
+push constant 215
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Jugador.borrar 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 206
+push this 0
+push constant 19
+add
+push constant 235
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Jugador.moverIzq 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 8
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Jugador.borrar 1
+pop temp 0
+push this 0
+push constant 5
+sub
+push constant 8
+call Math.max 2
+pop this 0
+push pointer 0
+call Jugador.dibujar 1
+pop temp 0
+label IF_FALSE0
+push constant 0
+return
+function Jugador.moverDer 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 484
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Jugador.borrar 1
+pop temp 0
+push this 0
+push constant 5
+add
+push constant 484
+call Math.min 2
+pop this 0
+push pointer 0
+call Jugador.dibujar 1
+pop temp 0
+label IF_FALSE0
+push constant 0
+return
+function Jugador.posArma 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 17
+add
+return

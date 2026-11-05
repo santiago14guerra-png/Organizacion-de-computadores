@@ -1,0 +1,32 @@
+function Main.main 2
+call Pantallas.inicio 0
+pop local 1
+label WHILE_EXP0
+push local 1
+not
+if-goto WHILE_END0
+call Juego.new 0
+pop local 0
+push local 0
+call Juego.jugar 1
+pop local 1
+push local 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+call Juego.gano 1
+push local 0
+call Juego.puntos 1
+call Pantallas.fin 2
+pop local 1
+label IF_FALSE0
+push local 0
+call Juego.dispose 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+call Pantallas.despedida 0
+pop temp 0
+push constant 0
+return

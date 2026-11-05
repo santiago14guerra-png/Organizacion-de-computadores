@@ -1,0 +1,147 @@
+function Juego.new 0
+push constant 4
+call Memory.alloc 1
+pop pointer 0
+push constant 12
+call Tablero.new 1
+pop this 0
+call Jugador.new 0
+pop this 1
+call Bala.new 0
+pop this 2
+call Flota.new 0
+pop this 3
+push this 0
+call Tablero.dibujar 1
+pop temp 0
+push this 1
+call Jugador.dibujar 1
+pop temp 0
+push this 3
+call Flota.dibujar 1
+pop temp 0
+push pointer 0
+return
+function Juego.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Tablero.dispose 1
+pop temp 0
+push this 1
+call Jugador.dispose 1
+pop temp 0
+push this 2
+call Bala.dispose 1
+pop temp 0
+push this 3
+call Flota.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Juego.jugar 2
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push pointer 0
+call Juego.gano 1
+push this 3
+call Flota.llego 1
+or
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 81
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 0
+push constant 130
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 1
+call Jugador.moverIzq 1
+pop temp 0
+label IF_FALSE1
+push local 0
+push constant 132
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 1
+call Jugador.moverDer 1
+pop temp 0
+label IF_FALSE2
+push local 0
+push constant 32
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 2
+push this 1
+call Jugador.posArma 1
+call Bala.disparar 2
+pop temp 0
+label IF_FALSE3
+push this 2
+call Bala.mover 1
+pop temp 0
+push this 3
+call Flota.mover 1
+pop temp 0
+push this 3
+push this 2
+call Flota.recibirDisparo 2
+pop local 1
+push local 1
+push constant 0
+gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 0
+push local 1
+push this 3
+call Flota.vivos 1
+call Tablero.sumarPuntos 3
+pop temp 0
+label IF_FALSE4
+push constant 15
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 0
+call Tablero.borrar 1
+pop temp 0
+push constant 0
+not
+return
+function Juego.gano 0
+push argument 0
+pop pointer 0
+push this 3
+call Flota.vivos 1
+push constant 0
+eq
+return
+function Juego.puntos 0
+push argument 0
+pop pointer 0
+push this 0
+call Tablero.puntos 1
+return

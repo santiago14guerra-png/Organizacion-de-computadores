@@ -5,7 +5,6 @@ class Main {
         var Juego juego;
         var boolean seguir;
 
-        do Marciano.cargarDibujos();
         let seguir = Pantallas.inicio();
 
         while (seguir) {
@@ -18,7 +17,6 @@ class Main {
         }
 
         do Pantallas.despedida();
-        do Marciano.liberarDibujos();
         return;
     }
 }
