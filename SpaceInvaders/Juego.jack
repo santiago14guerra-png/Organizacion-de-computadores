@@ -54,7 +54,7 @@ class Juego {
                 do tablero.sumarPuntos(puntos, flota.vivos());
             }
 
-            do Sys.wait(40);
+            do Sys.wait(15);
         }
 
         do tablero.borrar();

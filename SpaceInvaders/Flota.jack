@@ -51,7 +51,7 @@ class Flota {
     // Entre menos marcianos quedan, menos espera la flota y mas rapido va.
     method void mover() {
         let espera = espera + 1;
-        if (espera > vivos) {
+        if (espera > (vivos + 8)) {
             let espera = 0;
             do avanzar();
         }

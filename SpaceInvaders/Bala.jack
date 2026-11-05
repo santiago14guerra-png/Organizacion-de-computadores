@@ -40,7 +40,7 @@ class Bala {
     method void mover() {
         if (activa) {
             do borrar();
-            let y = y - 8;
+            let y = y - 6;
             if (y < 18) {
                 let activa = false;
             } else {

@@ -41,7 +41,7 @@ class Jugador {
     method void moverIzq() {
         if (x > 8) {
             do borrar();
-            let x = Math.max(x - 6, 8);
+            let x = Math.max(x - 5, 8);
             do dibujar();
         }
         return;
@@ -50,7 +50,7 @@ class Jugador {
     method void moverDer() {
         if (x < 484) {
             do borrar();
-            let x = Math.min(x + 6, 484);
+            let x = Math.min(x + 5, 484);
             do dibujar();
         }
         return;
