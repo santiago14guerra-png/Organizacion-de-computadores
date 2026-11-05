@@ -2,9 +2,8 @@
 
 Organización de Computadores · Tercer parcial / Proyecto final
 
-- **Integrantes:** Santiago Guerra, [completar con los demás integrantes]
+- **Integrantes:** Santiago Guerra, Jacobo Restrepo Torres y Emmanuel Cardona
 - **Repositorio:** https://github.com/santiago14guerra-png/Organizacion-de-computadores (carpeta `SpaceInvaders`)
-- **Video demostrativo:** [completar]
 
 ## Cómo compilar y ejecutar
 
